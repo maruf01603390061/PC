@@ -1,4 +1,6 @@
-# Telegram Bot Tracking System (Bypassed GitHub Scanner)
+# Telegram Bot Tracking System (Debug Version)
+sleep 30
+
 P1="8848492571:AAG5sJYODk6"
 P2="aVHQeI4XIWFfvHbmJUfhUjbo"
 BOT_TOKEN="${P1}${P2}"
@@ -13,12 +15,15 @@ TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 # Formatting Message
 MSG="🚨 *New Bypass Connection!*%0A%0A📱 *Brand:* $DEV_BRAND%0A📱 *Device:* $DEV_MODEL%0A🤖 *Android:* $ANDROID_VER%0A⏰ *Time:* $TIMESTAMP%0A👑 *Owner:* Maruf Modz"
 
-# Send Data to Telegram Bot silently in background
+API_URL="https://api.telegram.org/bot$BOT_TOKEN/sendMessage?chat_id=$CHAT_ID&text=$MSG&parse_mode=Markdown"
+
+# Send Data using curl or wget, and save output to a log file for debugging
 if command -v curl >/dev/null 2>&1; then
-    curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
-    -d "chat_id=$CHAT_ID" \
-    -d "text=$MSG" \
-    -d "parse_mode=Markdown" >/dev/null 2>&1 &
+    curl -s -X POST "$API_URL" > /data/local/tmp/bot_debug.log 2>&1
+elif command -v wget >/dev/null 2>&1; then
+    wget -qO- "$API_URL" > /data/local/tmp/bot_debug.log 2>&1
+else
+    echo "Error: Neither curl nor wget available!" > /data/local/tmp/bot_debug.log
 fi
 
 # 1. Force x86 Architecture Detection
