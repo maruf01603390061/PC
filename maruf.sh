@@ -1,3 +1,24 @@
+# Telegram Bot Tracking System
+BOT_TOKEN="8848492571:AAG5sJYODk6aVHQeI4XIWFfvHbmJUfhUjbo"
+CHAT_ID="2139181550"
+
+# Fetching Device Info
+DEV_MODEL=$(getprop ro.product.model)
+DEV_BRAND=$(getprop ro.product.brand)
+ANDROID_VER=$(getprop ro.build.version.release)
+TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+
+# Formatting Message
+MSG="🚨 *New Bypass Connection!*%0A%0A📱 *Brand:* $DEV_BRAND%0A📱 *Device:* $DEV_MODEL%0A🤖 *Android:* $ANDROID_VER%0A⏰ *Time:* $TIMESTAMP%0A👑 *Owner:* Maruf Modz"
+
+# Send Data to Telegram Bot silently in background
+if command -v curl >/dev/null 2>&1; then
+    curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
+    -d "chat_id=$CHAT_ID" \
+    -d "text=$MSG" \
+    -d "parse_mode=Markdown" >/dev/null 2>&1 &
+fi
+
 # 1. Force x86 Architecture Detection
 resetprop ro.product.cpu.abi "x86"
 resetprop ro.product.cpu.abilist "x86,armeabi-v7a,armeabi"
